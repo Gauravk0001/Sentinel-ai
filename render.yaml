@@ -1,19 +1,27 @@
-# SentinelAI - Render Blueprint
+# SentinelAI - Render Blueprint (Native Python Runtime)
 # Deploys a single full-stack web service (FastAPI backend + built React frontend)
-# on the same origin. The backend serves the frontend static files at /.
+# on the same origin. Uses Render's native Python runtime (free-plan compatible,
+# no Docker required). The backend serves the frontend static files at /.
 #
 # To deploy: push this repo to GitHub, then use "New Blueprint" in Render
 # and connect the repo. Render will read this file.
+#
+# The repo root is the deployment root (no rootDir), so ai_engine/ and dataset/
+# remain accessible. build.sh (repo root) installs backend deps and builds the
+# frontend. The start command runs uvicorn from the backend/ directory.
 
 services:
   - type: web
     name: sentinelai
-    runtime: docker
+    runtime: python
     plan: free
-    dockerfilePath: ./Dockerfile.render
+    buildCommand: ./build.sh
+    startCommand: cd backend && uvicorn app:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /health
     autoDeploy: true
     envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.7
       - key: ENVIRONMENT
         value: production
       - key: DEBUG
@@ -21,10 +29,10 @@ services:
       - key: SECRET_KEY
         generateValue: true
       - key: DATABASE_URL
-        value: sqlite:///./sentinelai.db
+        value: sqlite:////data/sentinelai.db
       - key: REDIS_URL
         value: redis://localhost:6379/0
     disk:
       name: sentinelai-data
-      mountPath: /app
+      mountPath: /data
       sizeGB: 1

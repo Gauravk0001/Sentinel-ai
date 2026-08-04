@@ -209,7 +209,8 @@ async def get_daily_summary():
 # frontend is copied to /app/frontend/dist. In dev, it may be at ../frontend/dist.
 _FRONTEND_DIST_CANDIDATES = [
     "/app/frontend/dist",                    # Render Docker deployment
-    os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "frontend", "dist"),
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "frontend", "dist"),  # backend/frontend/dist
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "frontend", "dist"),  # /app/frontend/dist (repo root)
     os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "frontend", "dist"),
 ]
 
