@@ -21,7 +21,8 @@ This is a **full-stack application** where the frontend calls `/api/...` and con
 - [x] 9. Update `.gitignore` to exclude build artifacts
 - [x] 9b. Clean up requirements.txt (remove unused heavy deps: weasyprint, slowapi, prometheus, reportlab)
 - [x] 10. Re-authenticate GitHub CLI (token invalid) - logged in as Gauravk0001
-- [ ] 11. Push code to GitHub repo (Sentinel-ai.git)
+- [x] 11. Push code to GitHub repo (Sentinel-ai.git) - main branch pushed
+- [x] 11b. Fix CI failures (scikit-learn 1.4.1->1.4.2, add bcrypt==4.0.1) - CI ✓ passing
 - [ ] 12. Create Render service via blueprint or dashboard
 - [ ] 13. Verify deployment (health, login, AI endpoints)
 
