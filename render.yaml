@@ -29,10 +29,6 @@ services:
       - key: SECRET_KEY
         generateValue: true
       - key: DATABASE_URL
-        value: sqlite:////data/sentinelai.db
+        value: sqlite:///./sentinelai.db
       - key: REDIS_URL
         value: redis://localhost:6379/0
-    disk:
-      name: sentinelai-data
-      mountPath: /data
-      sizeGB: 1
