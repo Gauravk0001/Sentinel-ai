@@ -1,0 +1,158 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background-color: #0a0b1e;
+    color: #e2e8f0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #0a0b1e;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #1e2048;
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #2e3068;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-cyber-card/80 backdrop-blur-xl border border-cyber-border rounded-xl;
+  }
+
+  .glass-card-hover {
+    @apply glass-card transition-all duration-300 hover:border-primary-500/50 hover:shadow-glow;
+  }
+
+  .glass-input {
+    @apply bg-cyber-card/60 border border-cyber-border rounded-lg px-4 py-3 text-white 
+           placeholder-gray-500 focus:outline-none focus:border-primary-500/50 focus:ring-2 
+           focus:ring-primary-500/20 transition-all duration-300;
+  }
+
+  .glass-button {
+    @apply px-6 py-3 bg-primary-600/20 border border-primary-500/30 rounded-lg 
+           text-primary-300 font-medium hover:bg-primary-600/30 hover:border-primary-500/50 
+           transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .glass-button-primary {
+    @apply glass-button bg-primary-600 text-white hover:bg-primary-700;
+  }
+
+  .glass-badge {
+    @apply px-3 py-1 rounded-full text-xs font-medium border;
+  }
+
+  .badge-safe {
+    @apply glass-badge bg-green-500/10 border-green-500/30 text-green-400;
+  }
+
+  .badge-low {
+    @apply glass-badge bg-blue-500/10 border-blue-500/30 text-blue-400;
+  }
+
+  .badge-medium {
+    @apply glass-badge bg-yellow-500/10 border-yellow-500/30 text-yellow-400;
+  }
+
+  .badge-high {
+    @apply glass-badge bg-orange-500/10 border-orange-500/30 text-orange-400;
+  }
+
+  .badge-critical {
+    @apply glass-badge bg-red-500/10 border-red-500/30 text-red-400;
+  }
+
+  .status-dot {
+    @apply w-2 h-2 rounded-full inline-block;
+  }
+
+  .status-dot-online {
+    @apply status-dot bg-green-400 animate-pulse;
+  }
+
+  .status-dot-offline {
+    @apply status-dot bg-gray-600;
+  }
+
+  .status-dot-away {
+    @apply status-dot bg-yellow-400;
+  }
+
+  .status-dot-danger {
+    @apply status-dot bg-red-400 animate-pulse;
+  }
+
+  .gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary-400 to-cyan-400;
+  }
+
+  .gradient-border {
+    @apply relative;
+  }
+
+  .gradient-border::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.5), rgba(0, 240, 255, 0.5));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
+
+  .animate-in {
+    animation: animateIn 0.3s ease-out;
+  }
+
+  @keyframes animateIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .stats-value {
+    @apply text-3xl font-bold gradient-text;
+  }
+
+  .stats-label {
+    @apply text-sm text-gray-400 mt-1;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+

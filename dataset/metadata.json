@@ -1,0 +1,19 @@
+{
+  "total_employees": 1000,
+  "total_events": 200000,
+  "malicious_employees": 50,
+  "normal_employees": 950,
+  "date_range": {
+    "start": "2026-06-04T19:11:46.178212",
+    "end": "2026-08-03T19:12:14.931306"
+  },
+  "event_breakdown": {
+    "login": 28931,
+    "usb": 28535,
+    "cloud": 28740,
+    "network": 28216,
+    "browser": 28562,
+    "email": 28310,
+    "application": 28706
+  }
+}

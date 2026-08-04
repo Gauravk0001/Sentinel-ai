@@ -1,0 +1,30 @@
+# SentinelAI - Render Blueprint
+# Deploys a single full-stack web service (FastAPI backend + built React frontend)
+# on the same origin. The backend serves the frontend static files at /.
+#
+# To deploy: push this repo to GitHub, then use "New Blueprint" in Render
+# and connect the repo. Render will read this file.
+
+services:
+  - type: web
+    name: sentinelai
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile.render
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: ENVIRONMENT
+        value: production
+      - key: DEBUG
+        value: "false"
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        value: sqlite:///./sentinelai.db
+      - key: REDIS_URL
+        value: redis://localhost:6379/0
+    disk:
+      name: sentinelai-data
+      mountPath: /app
+      sizeGB: 1
