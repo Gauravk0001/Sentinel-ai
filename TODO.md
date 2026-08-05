@@ -1,32 +1,16 @@
-# SentinelAI - Deployment Tasks (Render Full-Stack - Option A)
-
-## Objective
-Deploy SentinelAI as a single full-stack service on Render.com that serves both the FastAPI backend AND the built React frontend on the same origin (satisfying the `/api` and `/ws` same-origin constraint).
-
-## Approach
-This is a **full-stack application** where the frontend calls `/api/...` and connects to `/ws` using the same host. Render can host a single Python web service that:
-1. Runs the FastAPI backend
-2. Mounts the built `frontend/dist/` as static files with SPA fallback
-3. Serves both on the same origin
+# SentinelAI - Run Locally
 
 ## Steps
-- [x] 1. Verify Docker/WSL blocker (Docker path blocked - requires WSL2 admin install + restart)
-- [x] 2. Pivot to cloud deployment (Option A - Render full-stack)
-- [x] 3. Verify Vercel CLI authenticated (gauravk0001)
-- [x] 4. Frontend dependencies installed (npm ci)
-- [x] 5. Frontend build verified (dist/index.html + dist/assets created)
-- [x] 6. Modify backend `app.py` to serve static frontend files (SPA fallback)
-- [x] 7. Create Render Dockerfile (`Dockerfile.render`) for full-stack service
-- [x] 8. Create `render.yaml` blueprint
-- [x] 9. Update `.gitignore` to exclude build artifacts
-- [x] 9b. Clean up requirements.txt (remove unused heavy deps: weasyprint, slowapi, prometheus, reportlab)
-- [x] 10. Re-authenticate GitHub CLI (token invalid) - logged in as Gauravk0001
-- [x] 11. Push code to GitHub repo (Sentinel-ai.git) - main branch pushed
-- [x] 11b. Fix CI failures (scikit-learn 1.4.1->1.4.2, add bcrypt==4.0.1) - CI ✓ passing
-- [ ] 12. Create Render service via blueprint or dashboard
-- [ ] 13. Verify deployment (health, login, AI endpoints)
+- [x] 1. Analyze project structure & understand architecture
+- [x] 2. Create backend Python virtual environment
+- [x] 3. Install backend dependencies (relax versions if Python 3.14 incompatible)
+- [x] 4. Build frontend (npm run build) -> frontend/dist
+- [x] 5. Start backend server (uvicorn) serving full-stack on port 8000
+- [x] 6. Verify /health, /api endpoints, and frontend at localhost:8000
+- [x] 7. Provide access with default credentials
 
-## Notes
-- Default users: admin/admin123, analyst/analyst123, compliance/compliance123, viewer/viewer123
-- Backend uses SQLite by default (file-based, persists on Render disk)
-- AI model retrains on first use
+## Fix - AI Features Not Working
+- [x] Diagnosed: /api/ai/alerts/live and /api/ai/high-risk took 83s (predict_all over 1000 employees)
+- [x] Fixed: predict_all now reuses precomputed training results (fast path)
+- [x] Verified: alerts/live 83s -> 0.1s, high-risk 0.1s, predict 0.1s, model-info 0s
+- [x] Restarted backend to apply fix

@@ -214,14 +214,45 @@ class PredictionService:
             'ml_risk_score': round(float(ml_score), 2),
             'anomaly_score': round(float(anomaly_score), 2),
             'correlation_score': round(float(correlation_score), 2),
-            'is_anomaly': final_score > 60,
+'is_anomaly': final_score > 60,
             'model_version': base_assessment.get('model_version', 'SentinelAI v1.0')
         }
 
     def predict_all(self) -> List[Dict[str, Any]]:
-        """Predict risk for all employees."""
+        """
+        Predict risk for all employees.
+
+        Fast path: reuse the precomputed results from training
+        (self.results) which already contain risk scores, threat levels,
+        confidence, and explanations for every employee. This avoids
+        re-running the full SHAP/baseline/correlation pipeline per employee,
+        which is extremely slow for large employee sets.
+
+        Slow path: if no training results are available yet, fall back to
+        evaluating each employee individually.
+        """
         if self.employees is None:
             return []
+
+        if self.results is not None and not self.results.empty:
+            results = []
+            for _, row in self.results.iterrows():
+                eid = row.get('employee_id')
+                if eid is None:
+                    continue
+                results.append({
+                    'employee_id': eid,
+                    'risk_score': float(row.get('risk_score', 0) or 0),
+                    'threat_level': row.get('threat_level', 'Safe'),
+                    'confidence': float(row.get('confidence', 0) or 0),
+                    'reasons': list(row.get('reasons', []) or []),
+                    'recommended_actions': list(row.get('suggested_actions', []) or []),
+                    'model_version': row.get('model_version', 'SentinelAI v1.0'),
+                    'timestamp': row.get('timestamp') or datetime.now().isoformat(),
+                    'is_anomaly': bool(float(row.get('risk_score', 0) or 0) > 60),
+                })
+            return results
+
         return [self.predict_employee(eid) for eid in self.employees['employee_id']]
 
     def get_risk_history(self, employee_id: str, days: int = 30) -> List[Dict[str, Any]]:
